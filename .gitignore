@@ -1,0 +1,78 @@
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.*
+!.env.example
+backend/.env
+
+# =========================
+# Frontend / Node
+# =========================
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+venv/
+.venv/
+backend/venv/
+
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# ChromaDB Local Data
+# =========================
+chroma_db/
+backend/chroma_db/
+
+# =========================
+# Temporary / Uploaded Files
+# =========================
+*.tmp
+*.temp
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =========================
+# OS Files
+# =========================
+Thumbs.db
+desktop.ini
+backend/sci_homepage.html
+backend/test_ir_code.pdf
+backend/test_labour.pdf

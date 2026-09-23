@@ -1,0 +1,328 @@
+/* Navbar.css */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-ivory);
+  border-bottom: 1px solid var(--color-border-light);
+  transition:
+    box-shadow var(--transition-normal),
+    padding var(--transition-normal);
+}
+
+.navbar--scrolled {
+  box-shadow: var(--shadow-md);
+  background-color: rgba(250, 247, 242, 0.97);
+  backdrop-filter: blur(8px);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  height: 68px;
+  gap: var(--space-8);
+  transition: height var(--transition-normal);
+}
+
+.navbar--scrolled .navbar__inner {
+  height: 60px;
+}
+
+
+/* Logo */
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.navbar__logo-icon {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--color-burgundy);
+
+  background:
+    linear-gradient(145deg,
+      rgba(126, 36, 62, 0.08),
+      rgba(126, 36, 62, 0.02));
+
+  border: 1px solid rgba(126, 36, 62, 0.16);
+  border-radius: 10px;
+
+  flex-shrink: 0;
+
+  transition:
+    transform var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.navbar__logo-icon svg {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
+
+.navbar__logo:hover .navbar__logo-icon {
+  transform: translateY(-1px);
+  border-color: rgba(126, 36, 62, 0.3);
+  background-color: rgba(126, 36, 62, 0.07);
+}
+
+.navbar__logo-text {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-burgundy);
+  letter-spacing: -0.01em;
+}
+
+
+/* Desktop nav */
+
+.navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin-left: auto;
+}
+
+.navbar__link {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-charcoal-mid);
+  text-decoration: none;
+  padding: var(--space-1) 0;
+  border-bottom: 2px solid transparent;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.navbar__link:hover {
+  color: var(--color-burgundy);
+}
+
+.navbar__link--active {
+  color: var(--color-burgundy);
+  border-bottom-color: var(--color-burgundy);
+}
+
+.navbar__link:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+
+/* CTA button */
+
+.navbar__cta-btn {
+  padding: 0.5rem 1.25rem;
+  font-size: var(--text-sm);
+}
+
+.navbar__auth-btns {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.navbar__login-link {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-burgundy);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-md, 6px);
+  transition: background-color 0.2s ease;
+}
+
+.navbar__login-link:hover {
+  background-color: rgba(27, 54, 93, 0.06);
+}
+
+.navbar__user-menu {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.navbar__user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(27, 54, 93, 0.05);
+  border: 1px solid rgba(27, 54, 93, 0.12);
+  border-radius: 100px;
+}
+
+.navbar__user-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.navbar__user-initial {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-burgundy);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.navbar__user-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-charcoal);
+  max-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navbar__logout-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 6px);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-charcoal-mid);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar__logout-btn:hover {
+  border-color: #dc2626;
+  color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.navbar__mobile-user {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.navbar__mobile-auth {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-2);
+}
+
+
+/* Hamburger */
+
+.navbar__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: var(--space-2);
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: var(--color-charcoal);
+  border-radius: 2px;
+  transition:
+    transform var(--transition-normal),
+    opacity var(--transition-normal);
+}
+
+.hamburger-line:nth-child(1).open {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-line:nth-child(2).open {
+  opacity: 0;
+}
+
+.hamburger-line:nth-child(3).open {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* Mobile menu */
+
+.navbar__mobile-menu {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4) var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border-light);
+  background-color: var(--color-ivory);
+  animation: fadeIn 0.2s ease;
+}
+
+.navbar__mobile-link {
+  padding: var(--space-3) 0;
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--color-charcoal-mid);
+  border-bottom: 1px solid var(--color-border-light);
+  transition: color var(--transition-fast);
+}
+
+.navbar__mobile-link:hover,
+.navbar__mobile-link--active {
+  color: var(--color-burgundy);
+}
+
+.navbar__mobile-cta {
+  margin-top: var(--space-4);
+  justify-content: center;
+  width: 100%;
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+  .navbar__nav,
+  .navbar__cta {
+    display: none;
+  }
+
+  .navbar__hamburger {
+    display: flex;
+  }
+
+  .navbar__inner {
+    height: 60px;
+  }
+
+  .navbar__logo-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+  }
+
+  .navbar__logo-icon svg {
+    width: 27px;
+    height: 27px;
+  }
+}

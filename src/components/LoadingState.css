@@ -1,0 +1,50 @@
+/* LoadingState.css */
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12) var(--space-8);
+  gap: var(--space-4);
+  max-width: 520px;
+  margin: var(--space-8) auto;
+  text-align: center;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
+}
+
+.loading-state__icon-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: rgba(107, 39, 55, 0.06);
+  border: 1px solid rgba(107, 39, 55, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-burgundy);
+  animation: pulseIcon 2s infinite ease-in-out;
+}
+
+@keyframes pulseIcon {
+  0% {
+    transform: scale(0.96);
+    box-shadow: 0 0 0 0 rgba(107, 39, 55, 0.2);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 0 0 10px rgba(107, 39, 55, 0);
+  }
+  100% {
+    transform: scale(0.96);
+    box-shadow: 0 0 0 0 rgba(107, 39, 55, 0);
+  }
+}
+
+.loading-state__text {
+  font-size: var(--text-sm);
+  color: var(--color-charcoal);
+  font-weight: 500;
+  line-height: 1.6;
+}

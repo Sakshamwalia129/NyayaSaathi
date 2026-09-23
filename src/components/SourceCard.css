@@ -1,0 +1,101 @@
+/* SourceCard.css */
+
+.source-card {
+  padding: var(--space-5) var(--space-6);
+}
+
+.source-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-3);
+}
+
+.source-card__badge {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  display: block;
+  margin-bottom: var(--space-1);
+}
+
+.source-card__title {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-charcoal);
+  margin-bottom: var(--space-1);
+}
+
+.source-card__section {
+  font-size: var(--text-sm);
+  color: var(--color-burgundy);
+  font-weight: 500;
+}
+
+.source-card__icon {
+  color: var(--color-beige);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.source-card__summary {
+  font-size: var(--text-sm);
+  color: var(--color-charcoal-mid);
+  line-height: 1.7;
+  margin-bottom: var(--space-4);
+}
+
+.source-card__expand-btn {
+  font-size: var(--text-xs);
+  padding: 0.35rem 0.85rem;
+}
+
+.source-card__chevron {
+  transition: transform var(--transition-fast);
+}
+
+.source-card__chevron--up {
+  transform: rotate(180deg);
+}
+
+/* Expanded original text */
+.source-card__original {
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+  padding-top: var(--space-4);
+}
+
+.source-card__original-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-charcoal-light);
+  margin-bottom: var(--space-2);
+}
+
+.source-card__blockquote {
+  font-size: var(--text-sm);
+  line-height: 1.8;
+  color: var(--color-charcoal-mid);
+  padding: var(--space-4);
+  background-color: var(--color-ivory-dark);
+  border-left: 3px solid var(--color-gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: var(--space-3);
+  font-style: italic;
+}
+
+.source-card__why {
+  font-size: var(--text-xs);
+  color: var(--color-charcoal-light);
+  line-height: 1.6;
+}
+
+.source-card__why strong {
+  color: var(--color-charcoal-mid);
+  font-weight: 600;
+}
