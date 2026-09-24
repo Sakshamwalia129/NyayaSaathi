@@ -13,7 +13,6 @@ The scheduler:
 """
 
 import logging
-from datetime import datetime
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
@@ -82,6 +81,9 @@ def start_latest_judgment_scheduler():
 
     Safe against accidental duplicate start calls inside
     the same Python process.
+
+    The first update runs after the configured interval
+    instead of immediately during application startup.
     """
 
     if scheduler.running:
@@ -100,7 +102,6 @@ def start_latest_judgment_scheduler():
         replace_existing=True,
         max_instances=1,
         coalesce=True,
-        next_run_time=datetime.now(),
     )
 
     scheduler.start()

@@ -13,7 +13,6 @@ Responsibilities:
 
 import logging
 
-import chromadb
 
 from app.config import settings
 from app.services.embedding_service import (
@@ -40,17 +39,21 @@ _collection = None
 def _get_client():
     """
     Create and reuse the persistent ChromaDB client.
+
+    ChromaDB is imported lazily so the heavy dependency
+    stack is not loaded during FastAPI startup.
     """
 
     global _client
 
     if _client is None:
+        import chromadb
+
         _client = chromadb.PersistentClient(
             path=settings.CHROMA_PATH
         )
 
     return _client
-
 
 # ---------------------------------------------------------
 # COLLECTION
