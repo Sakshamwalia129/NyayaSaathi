@@ -268,6 +268,17 @@ async def check_rights(
                 ),
             ),
 
+            # Legal Action Plan.
+            # This is additive so existing nextSteps/history
+            # remain fully compatible.
+            "actionPlan": llm_data.get(
+                "actionPlan",
+                llm_data.get(
+                    "action_plan",
+                    None,
+                ),
+            ),
+
             "groundingNote": llm_data.get(
                 "groundingNote",
                 llm_data.get(

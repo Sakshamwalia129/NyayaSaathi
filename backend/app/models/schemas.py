@@ -21,6 +21,7 @@ class RightsCheckRequest(BaseModel):
         max_length=2000,
         description="User's description of their legal situation.",
     )
+
     category: Optional[str] = Field(
         None,
         description="Optional legal category (Consumer, Workplace, etc.)",
@@ -28,14 +29,7 @@ class RightsCheckRequest(BaseModel):
 
 
 # ─────────────────────────────────────────────
-# Rights Checker — Response (matches frontend field names exactly)
-#
-# Frontend reads:
-#   result.situation
-#   result.explanation
-#   result.provisions[].{id, source, section, summary, originalText, whyUsed}
-#   result.nextSteps[]
-#   result.groundingNote
+# Rights Checker — Legal Provision
 # ─────────────────────────────────────────────
 
 class LegalProvision(BaseModel):
@@ -48,14 +42,56 @@ class LegalProvision(BaseModel):
     verified: bool = False
 
 
+# ─────────────────────────────────────────────
+# Rights Checker — Legal Action Plan
+# ─────────────────────────────────────────────
+
+class LegalActionStep(BaseModel):
+    step: int
+    title: str
+    description: str
+
+
+class LegalAuthority(BaseModel):
+    name: str
+    whenToApproach: str     # camelCase — matches frontend
+
+
+class LegalActionPlan(BaseModel):
+    steps: list[LegalActionStep] = Field(default_factory=list)
+    documents: list[str] = Field(default_factory=list)
+    authority: Optional[LegalAuthority] = None
+
+
+# ─────────────────────────────────────────────
+# Rights Checker — Response
+#
+# Frontend reads:
+#   result.situation
+#   result.explanation
+#   result.provisions[]
+#   result.nextSteps[]
+#   result.actionPlan
+#   result.groundingNote
+#
+# nextSteps is intentionally preserved for compatibility
+# with existing frontend code and previously saved history.
+# ─────────────────────────────────────────────
+
 class RightsCheckData(BaseModel):
     situation: str
     explanation: str
+
     provisions: list[LegalProvision]
-    nextSteps: list[str]    # camelCase — matches frontend
-    groundingNote: str      # camelCase — matches frontend
+
+    nextSteps: list[str]     # existing field — keep for compatibility
+
+    actionPlan: Optional[LegalActionPlan] = None
+
+    groundingNote: str
     retrievalConfidence: float
-    
+
+
 class RightsCheckResponse(BaseModel):
     success: bool
     data: Optional[RightsCheckData] = None
@@ -63,20 +99,7 @@ class RightsCheckResponse(BaseModel):
 
 
 # ─────────────────────────────────────────────
-# Judgment Simplifier — Response (matches frontend field names exactly)
-#
-# Frontend reads:
-#   result.caseTitle
-#   result.court
-#   result.year
-#   result.caseType
-#   result.brief
-#   result.facts
-#   result.arguments
-#   result.issues[]
-#   result.decision
-#   result.legalPrinciples[]
-#   result.paragraphs[].{id, number, text}
+# Judgment Simplifier — Response
 # ─────────────────────────────────────────────
 
 class JudgmentParagraph(BaseModel):

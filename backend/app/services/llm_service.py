@@ -65,6 +65,40 @@ MOCK_RIGHTS_RESPONSE = {
         "Set USE_MOCK_LLM=false in backend/.env",
         "Restart the backend: uvicorn app.main:app --reload",
     ],
+
+    # Legal Action Plan — demo/mock structure.
+    "actionPlan": {
+        "steps": [
+            {
+                "step": 1,
+                "title": "Enable Real AI Responses",
+                "description": (
+                    "Configure the LLM API key and disable mock mode "
+                    "to generate a grounded legal action plan."
+                ),
+            },
+            {
+                "step": 2,
+                "title": "Add Verified Legal Sources",
+                "description": (
+                    "Ensure relevant verified legal documents are available "
+                    "in the legal knowledge base."
+                ),
+            },
+        ],
+        "documents": [
+            "Relevant documents supporting the user's situation",
+            "Written communications or other available evidence",
+        ],
+        "authority": {
+            "name": "Not identified in demo mode",
+            "whenToApproach": (
+                "A relevant authority can be identified only from "
+                "retrieved legal context in real AI mode."
+            ),
+        },
+    },
+
     "groundingNote": (
         "Demo mode is active. No real LLM generation is being performed. "
         "This response is returned to confirm the API connection is "
@@ -130,7 +164,8 @@ an Indian legal information platform.
 STRICT RULES:
 
 1. Answer ONLY from the legal context provided to you.
-   Do NOT invent laws, sections, case names, dates, or legal claims.
+   Do NOT invent laws, sections, case names, dates, legal claims,
+   authorities, procedures, deadlines, portals, helplines, or remedies.
 
 2. If the provided context does not contain enough information,
    explicitly say so.
@@ -170,6 +205,45 @@ STRICT RULES:
 13. Always include a disclaimer that the response provides general
     legal information only.
 
+LEGAL ACTION PLAN RULES:
+
+14. Create a practical "actionPlan" based on the user's situation
+    and the retrieved legal context.
+
+15. The action plan must NOT introduce a legal right, remedy,
+    authority, procedure, deadline, portal, helpline, or legal
+    requirement that is unsupported by the retrieved context.
+
+16. The "steps" array should contain practical actions in a sensible
+    order. Each step must contain:
+      - step: sequential integer beginning at 1
+      - title: short action title
+      - description: simple explanation of the action
+
+17. Do not promise an outcome or tell the user that taking a step
+    will guarantee success.
+
+18. For "documents", include only documents or evidence that are
+    directly mentioned in the context or are clearly relevant to
+    preserving/supporting the facts already described by the user.
+    Do not invent mandatory filing requirements.
+
+19. For "authority":
+    - identify an authority only when it is supported by the
+      retrieved legal context;
+    - otherwise use:
+      "Not identified from the available legal sources"
+    - do not invent courts, commissions, departments, portals,
+      helpline numbers, addresses, or filing procedures.
+
+20. "whenToApproach" must also remain grounded in the available
+    legal context. If the context does not establish when an
+    authority should be approached, clearly state that this cannot
+    be determined from the available legal sources.
+
+21. The action plan is general legal information and must not be
+    described as professional legal advice.
+
 RESPONSE FORMAT — return valid JSON only, no extra text:
 
 {
@@ -192,6 +266,30 @@ RESPONSE FORMAT — return valid JSON only, no extra text:
     "Specific practical step 1",
     "Specific practical step 2"
   ],
+
+  "actionPlan": {
+    "steps": [
+      {
+        "step": 1,
+        "title": "Short action title",
+        "description": "Practical action based on the retrieved legal context"
+      },
+      {
+        "step": 2,
+        "title": "Short action title",
+        "description": "Next practical action based on the retrieved legal context"
+      }
+    ],
+
+    "documents": [
+      "Relevant document or evidence supported by the situation/context"
+    ],
+
+    "authority": {
+      "name": "Authority supported by the retrieved context, or Not identified from the available legal sources",
+      "whenToApproach": "When the authority may be approached according to the context, or state that this cannot be determined from the available legal sources"
+    }
+  },
 
   "groundingNote": "Briefly explain which legal source(s) were used and any important limitations. Do not expose internal chunk IDs."
 }
@@ -252,10 +350,12 @@ RESPONSE FORMAT — return valid JSON only, no extra text:
 # ─────────────────────────────────────────────────────────────
 
 GEMINI_FALLBACK_MODELS = [
+    "gemini-3.5-flash-lite",
     "gemini-3.7-flash",
     "gemini-3.6-flash",
     "gemini-3.5-flash",
 ]
+
 
 def _is_temporary_gemini_error(exc: Exception) -> bool:
     """
@@ -565,6 +665,13 @@ RETRIEVED LEGAL CONTEXT:
 
 Generate a structured legal information response
 based strictly on the context above.
+
+In addition to the existing Rights Checker response,
+generate the "actionPlan" using only the user's situation
+and the retrieved legal context.
+
+Do not invent authorities, legal procedures, deadlines,
+portals, helplines, filing requirements, or remedies.
 """
 
     raw = generate_response(

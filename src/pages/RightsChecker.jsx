@@ -5,20 +5,10 @@ import {
   checkRights,
   getRightsHistory,
 } from "../services/legalService";
-import { EXAMPLE_QUERIES } from "../data/mockLegalData";
 import SourceCard from "../components/SourceCard";
 import LoadingState from "../components/LoadingState";
 import Disclaimer from "../components/Disclaimer";
 import "./RightsChecker.css";
-
-const CATEGORIES = [
-  "Consumer",
-  "Workplace",
-  "Rental / Property",
-  "Motor Accident",
-  "Family / Personal Safety",
-  "Other",
-];
 
 export default function RightsChecker() {
   const { user, loading: authLoading } = useAuth();
@@ -26,7 +16,6 @@ export default function RightsChecker() {
   const navigate = useNavigate();
 
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
@@ -43,10 +32,13 @@ export default function RightsChecker() {
     if (authLoading || !user) return;
 
     let isMounted = true;
+
     async function loadHistory() {
       setHistoryLoading(true);
+
       try {
         const response = await getRightsHistory();
+
         if (isMounted) {
           setHistory(response?.data || []);
         }
@@ -60,28 +52,11 @@ export default function RightsChecker() {
     }
 
     loadHistory();
+
     return () => {
       isMounted = false;
     };
   }, [user, authLoading]);
-
-
-
-  // ============================================================
-  // EXAMPLE QUERY
-  // ============================================================
-
-  function handleUseExample() {
-    const pick =
-      EXAMPLE_QUERIES[
-      Math.floor(Math.random() * EXAMPLE_QUERIES.length)
-      ];
-
-    setQuery(pick.text);
-    setCategory(pick.category);
-    setResult(null);
-    setError("");
-  }
 
   // ============================================================
   // SUBMIT RIGHTS QUERY
@@ -112,7 +87,7 @@ export default function RightsChecker() {
     setResult(null);
 
     try {
-      const response = await checkRights(query, category);
+      const response = await checkRights(query, "");
 
       setResult(response.data);
 
@@ -142,7 +117,6 @@ export default function RightsChecker() {
 
   function handleReset() {
     setQuery("");
-    setCategory("");
     setResult(null);
     setError("");
   }
@@ -153,7 +127,6 @@ export default function RightsChecker() {
 
   function handleHistoryClick(item) {
     setQuery(item.query || "");
-    setCategory(item.category || "");
 
     const savedResult = item.response?.data;
 
@@ -174,14 +147,42 @@ export default function RightsChecker() {
 
         {/* Unauthenticated requirement prompt */}
         {!user && !authLoading && (
-          <div className="card" style={{ marginBottom: "2rem", padding: "1.5rem", borderLeft: "4px solid #c5a059" }}>
-            <h3 style={{ fontFamily: "Playfair Display, serif", margin: "0 0 0.5rem 0", color: "#1b365d" }}>
+          <div
+            className="card"
+            style={{
+              marginBottom: "2rem",
+              padding: "1.5rem",
+              borderLeft: "4px solid #c5a059",
+            }}
+          >
+            <h3
+              style={{
+                fontFamily: "Playfair Display, serif",
+                margin: "0 0 0.5rem 0",
+                color: "#1b365d",
+              }}
+            >
               Sign In to Save Your Activity
             </h3>
-            <p style={{ color: "#6b7280", margin: "0 0 1rem 0", fontSize: "0.95rem" }}>
-              Signing in lets you run personalized Rights Checks and save your activity history securely in your private account.
+
+            <p
+              style={{
+                color: "#6b7280",
+                margin: "0 0 1rem 0",
+                fontSize: "0.95rem",
+              }}
+            >
+              Signing in lets you run personalized Rights Checks and
+              save your activity history securely in your private
+              account.
             </p>
-            <Link to="/login" state={{ from: location }} className="btn-primary" style={{ display: "inline-block" }}>
+
+            <Link
+              to="/login"
+              state={{ from: location }}
+              className="btn-primary"
+              style={{ display: "inline-block" }}
+            >
               Sign In to NyayaSaathi
             </Link>
           </div>
@@ -192,7 +193,6 @@ export default function RightsChecker() {
         ===================================================== */}
 
         {user && (historyLoading || history.length > 0) && (
-
           <section
             className="rights-history"
             aria-labelledby="rights-history-heading"
@@ -227,9 +227,7 @@ export default function RightsChecker() {
                     key={item.id}
                     type="button"
                     className="rights-history__item card"
-                    onClick={() =>
-                      handleHistoryClick(item)
-                    }
+                    onClick={() => handleHistoryClick(item)}
                   >
                     <span className="rights-history__category">
                       {item.category || "General"}
@@ -241,9 +239,7 @@ export default function RightsChecker() {
 
                     <span className="rights-history__date">
                       {item.createdAt
-                        ? new Date(
-                          item.createdAt
-                        ).toLocaleString()
+                        ? new Date(item.createdAt).toLocaleString()
                         : ""}
                     </span>
                   </button>
@@ -301,9 +297,7 @@ export default function RightsChecker() {
             }}
             placeholder="Example: My landlord has not returned my security deposit even after I vacated the house..."
             rows={5}
-            aria-describedby={
-              error ? "query-error" : undefined
-            }
+            aria-describedby={error ? "query-error" : undefined}
           />
 
           {error && (
@@ -315,42 +309,6 @@ export default function RightsChecker() {
               {error}
             </p>
           )}
-
-          {/* Category selector */}
-
-          <div className="checker-form__category-row">
-            <span className="checker-form__label">
-              Category{" "}
-              <span className="checker-form__optional">
-                (optional)
-              </span>
-            </span>
-
-            <div
-              className="checker-form__categories"
-              role="group"
-              aria-label="Legal category"
-            >
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={`category-chip${category === cat
-                    ? " category-chip--active"
-                    : ""
-                    }`}
-                  onClick={() =>
-                    setCategory(
-                      category === cat ? "" : cat
-                    )
-                  }
-                  aria-pressed={category === cat}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
 
           {/* Actions */}
 
@@ -364,15 +322,6 @@ export default function RightsChecker() {
               {loading
                 ? "Reviewing..."
                 : "Check My Rights"}
-            </button>
-
-            <button
-              type="button"
-              className="btn-ghost"
-              onClick={handleUseExample}
-              disabled={loading}
-            >
-              Use an example
             </button>
 
             {result && (
@@ -458,7 +407,7 @@ export default function RightsChecker() {
               </div>
             </section>
 
-            {/* Next steps */}
+            {/* Existing Next Steps */}
 
             <section
               className="result-section"
@@ -493,6 +442,112 @@ export default function RightsChecker() {
                 </ol>
               </div>
             </section>
+
+            {/* =================================================
+                LEGAL ACTION PLAN
+            ================================================= */}
+
+            {result.actionPlan && (
+              <section
+                className="result-section action-plan"
+                aria-labelledby="action-plan-heading"
+              >
+                <h2
+                  id="action-plan-heading"
+                  className="result-section__heading heading-serif"
+                >
+                  ⚖️ Your Legal Action Plan
+                </h2>
+
+                <p className="result-section__sub">
+                  A practical sequence of actions based on the
+                  legal information available for your situation.
+                </p>
+
+                {/* Action steps */}
+
+                {result.actionPlan.steps?.length > 0 && (
+                  <div className="action-plan__steps">
+                    {result.actionPlan.steps.map(
+                      (step, index) => (
+                        <div
+                          key={`${step.step}-${index}`}
+                          className="action-plan__step card"
+                        >
+                          <div
+                            className="action-plan__step-number"
+                            aria-hidden="true"
+                          >
+                            {step.step || index + 1}
+                          </div>
+
+                          <div className="action-plan__step-content">
+                            <h3 className="action-plan__step-title">
+                              {step.title}
+                            </h3>
+
+                            <p className="action-plan__step-description">
+                              {step.description}
+                            </p>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+
+                {/* Documents */}
+
+                {result.actionPlan.documents?.length > 0 && (
+                  <div className="action-plan__detail-card card">
+                    <h3 className="action-plan__detail-title">
+                      📄 Documents to Keep Ready
+                    </h3>
+
+                    <ul className="action-plan__documents">
+                      {result.actionPlan.documents.map(
+                        (document, index) => (
+                          <li key={index}>
+                            {document}
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+                )}
+
+                {/* Relevant Authority */}
+
+                {result.actionPlan.authority && (
+                  <div className="action-plan__detail-card card">
+                    <h3 className="action-plan__detail-title">
+                      🏛️ Relevant Authority
+                    </h3>
+
+                    <p className="action-plan__authority-name">
+                      {result.actionPlan.authority.name}
+                    </p>
+
+                    {result.actionPlan.authority.whenToApproach && (
+                      <p className="action-plan__authority-description">
+                        <strong>When to approach: </strong>
+                        {
+                          result.actionPlan.authority
+                            .whenToApproach
+                        }
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                <div className="action-plan__notice">
+                  <strong>Important:</strong>{" "}
+                  This action plan is based on the legal sources
+                  retrieved for your query and provides general
+                  legal information, not professional legal advice.
+                </div>
+              </section>
+            )}
 
             {/* Grounding */}
 

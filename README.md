@@ -22,6 +22,7 @@ The system:
 - Generates a plain-language explanation
 - Identifies relevant provisions and sources
 - Suggests practical next steps
+- Generates a structured Legal Action Plan with sequential steps, documents to keep ready, and relevant authorities
 - Provides source-grounded citations
 - Displays appropriate legal disclaimers
 - Stores previous queries in user-specific history
