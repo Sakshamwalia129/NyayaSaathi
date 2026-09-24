@@ -18,7 +18,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 from app.db.database import SessionLocal
-from app.services.latest_judgment_service import update_latest_judgments
 
 
 logger = logging.getLogger(__name__)
@@ -40,9 +39,15 @@ def run_latest_judgment_update():
     """
     Run one automatic Supreme Court judgment update cycle.
 
-    A fresh database session is created for every scheduler run
-    and always closed afterwards.
+    Heavy judgment-processing dependencies are imported only
+    when the scheduled job actually runs.
     """
+
+    # Lazy import prevents judgment-processing dependencies
+    # from loading during FastAPI startup.
+    from app.services.latest_judgment_service import (
+        update_latest_judgments,
+    )
 
     logger.info(
         "Starting automatic Supreme Court judgment update..."
