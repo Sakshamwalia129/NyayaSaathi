@@ -6,7 +6,6 @@ __pycache__/
 *$py.class
 *.so
 .pytest_cache/
-chroma_db/
 uploads/
 .DS_Store
 *.log

@@ -31,11 +31,8 @@ backend/venv/
 .coverage
 htmlcov/
 
-# =========================
-# ChromaDB Local Data
-# =========================
-chroma_db/
-backend/chroma_db/
+
+
 
 # =========================
 # Temporary / Uploaded Files
