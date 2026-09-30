@@ -3,7 +3,7 @@ uvicorn[standard]
 pydantic
 python-dotenv
 
-chromadb
+chromadb==1.5.9
 sentence-transformers
 PyMuPDF
 
